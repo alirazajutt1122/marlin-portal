@@ -1,0 +1,141 @@
+<div class="-mt-2  w-full heightFix  mb-4">
+
+    <div class="xl:col-span-1 flex flex-col flex-auto overflow-y-auto" style="height: 100%;">
+        <div class="overflow-x-hidden h-full">
+            <table class="w-full  bg-transparent" mat-table [dataSource]="mboSellDataSource" #recentTransactionsTable>
+                <ng-container matColumnDef="price">
+                    <th style="background-color: #193c5d ;width: 40%;" class="text-primary-500 text-lg sm:text-sm xl:text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        PRICE
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 whitespace-nowrap" [ngStyle]="{'color': transaction.colorByType}">
+                            {{transaction.price}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg sm:text-sm  xl:text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        AMOUNT
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}"> 
+                        <span class="pr-6 font-medium whitespace-nowrap">
+                            {{transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg sm:text-sm  xl:text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        TOTAL
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 font-medium whitespace-nowrap">
+                            {{transaction.price*transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="mboDataColumns; sticky: true "></tr>
+                <tr class="h-12" mat-row *matRowDef="let row; columns: mboDataColumns;"></tr>
+            </table>
+        </div>
+
+        <div class="overflow-hidden">
+            <table class="w-full bg-transparent -mt-16" mat-table [dataSource]="mboBuyBoldDataSource"
+                #recentTransactionsTable>
+
+                <ng-container matColumnDef="price">
+                    <th style="background-color: #193c5d ;width: 40%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        PRICE
+                    </th>
+                    <td class="shadow-2xl font-bold text-3xl sm:text-xl" mat-cell style="background-color: #0e0e0e;"
+                        *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 whitespace-nowrap" [ngStyle]="{'color': transaction.colorByType}">
+                            {{transaction.price}}
+                            <mat-icon class="text-green-500 -ml-1 icon-size-4.5 sm:icon-size-3.5 mx-0.5 mb-px"
+                                [svgIcon]="'heroicons_solid:arrow-narrow-up'"></mat-icon>
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        AMOUNT
+                    </th>
+                    <td class="shadow-2xl font-bold text-lg sm:text-md" mat-cell style="background-color: #0e0e0e "
+                        *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 font-medium whitespace-nowrap text-gray-400">
+                            ${{transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                    </th>
+                    <td class="shadow-2xl font-bold text-lg sm:text-md" mat-cell style="background-color: #0e0e0e "
+                        *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 font-medium whitespace-nowrap text-gray-400">
+                            {{transaction.price+transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="mboDataColumns"></tr>
+                <tr class="h-12" mat-row *matRowDef="let row; columns: mboDataColumns;"></tr>
+            </table>
+        </div>
+
+        <div class="overflow-y-auto overflow-x-hidden" style="height: 100%;">
+            <table class="w-full bg-transparent -mt-16" mat-table [dataSource]="mboBuyDataSource"
+                #recentTransactionsTable>
+
+                <ng-container matColumnDef="price">
+                    <th style="background-color: #193c5d ;width: 40%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        PRICE
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 whitespace-nowrap" [ngStyle]="{'color': transaction.colorByType}">
+                            {{transaction.price}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        AMOUNT
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 font-medium whitespace-nowrap">
+                            {{transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <th style="background-color: #193c5d ;width: 33%;" class="text-primary-500 text-lg" mat-header-cell
+                        *matHeaderCellDef>
+                        TOTAL
+                    </th>
+                    <td class="shadow-2xl" mat-cell *matCellDef="let transaction" [@animate]="{value:'*',params:{delay:'70ms',scale:'0.2'}}">
+                        <span class="pr-6 font-medium whitespace-nowrap">
+                            {{transaction.price+transaction.amount}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="mboDataColumns"></tr>
+                <tr class="h-12" mat-row *matRowDef="let row; columns: mboDataColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

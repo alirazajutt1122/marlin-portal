@@ -1,0 +1,39 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container class="flex flex-col flex-auto">
+
+        <mat-drawer class="min-w-45 dark:bg-gray-900" [autoFocus]="false" [mode]="drawerMode"
+                    [opened]="drawerOpened" [position]="'end'" #matDrawer style="z-index: inherit;">
+            <dashboard-sidebar></dashboard-sidebar>
+        </mat-drawer>
+        <mat-drawer-content class="flex flex-col overflow-hidden">
+            <div
+                style="background-image: url('assets/images/marlin-dashboard/dashboard-back.png');
+                background-size: cover;
+                background-repeat: no-repeat;"
+                class="flex-auto overflow-y-auto overflow-x-hidden" cdkScrollable>
+                <stock-market></stock-market>
+                <market-watch-dashboard  [dashboard]="true"></market-watch-dashboard>
+                <div class="flex items-end justify-end w-full">
+                    <div class="text-2xl sm:-mt-5 mr-12 font-semibold text-primary-500 mb-5" style="margin-bottom: -20px;" *ngIf="userType !== 'PARTICIPANT' && userType !== 'PARTICIPANT ADMIN'">
+                        <button *ngIf="investorProfileStatus === ''" [routerLink]="['/online-account-registration' , { action : 'user' }]" mat-stroked-button color="primary"> Become an
+                            investor
+                        </button>
+                        <button *ngIf="investorProfileStatus !== ''" [routerLink]="['/online-account-registration' , { action : 'user' }]" mat-stroked-button color="primary">
+                            View Investor Details 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="-mt-1" *ngIf="isParticipant"><working-order-dashboard-all></working-order-dashboard-all></div>
+                <div class="" > <trending-dashboard></trending-dashboard></div>
+               
+               
+                <order-book></order-book>
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

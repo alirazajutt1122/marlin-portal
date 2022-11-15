@@ -1,0 +1,1712 @@
+
+ 
+        <section class="widget" [ngClass]="{'no-padding' : isDashBoard}">
+            <header>
+                <h3>{{ 'Translation.Client' | translate }} <span class="fw-semi-bold">{{ 'Translation.Management' | translate }}</span></h3>
+                <div *ngIf="!isDashBoard" class="other_btns">
+                    <!-- <button class="add_new_btn" data-toggle="modal" data-target="#add_new" role="button" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)"
+                        data-backdrop="static" title="{{ 'Translation.Add Client' | translate }}" (click)="onNewAction()"><i class="fa fa-plus" aria-hidden="true"></i> </button> -->
+                     
+                        <a class="add_new_btn mx-2" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)"  title="{{ 'Translation.Add Client' | translate }}"  
+                        (click)="onNewActionShowForm()"  ><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <button data-toggle="collapse" data-target="#filter_box" class="filter_btn"><i class="fa fa-filter mr-2" aria-hidden="true"></i></button>
+                    <button class="mx-2" title="{{ 'Translation.Refresh' | translate }}"   (click)="onRefreshCDCStatus()" role="button"><span class="fa fa-refresh"></span> </button>
+                </div>
+                <div *ngIf="isDashBoard" class="grid_icon_box">
+                    <!-- <a href="#" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)" data-backdrop="static" title="{{ 'Translation.Add Client' | translate }}" data-toggle="modal"
+                        (click)="onNewAction()" data-target="#add_new"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
+                     <a class="add_new_btn" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)"  title="{{ 'Translation.Add Client' | translate }}"  
+                        (click)="onNewActionShowForm()"  ><i class="fa fa-plus" aria-hidden="true"></i></a>
+                      
+                </div>
+            </header>
+        
+            <div *ngIf="!isDashBoard" id="filter_box" class="collapse in">
+                <div class="row mt-2">
+                    <div class="col-sm-5 form-group">
+                        <label for="search-input">{{ 'Translation.Client Code' | translate }} <span class="validation"></span></label>
+                        <wj-input-mask class="wijmo_style" [(ngModel)]="searchClientCode" [isRequired]="false"> </wj-input-mask>
+                    </div>
+                    <div class="col-sm-5 form-group">
+                        <label for="search-input">{{ 'Translation.Client Name' | translate }} <span class="validation"></span></label>
+                        <wj-input-mask class="wijmo_style" [(ngModel)]="searchClientName" [isRequired]="false"> </wj-input-mask>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form_search part-btn">
+                            <button class="add_new_btn" title="{{ 'Translation.Search' | translate }}" data-toggle="collapse in" data-target="#filter_box" (click)="onSearchAction()" role="button"><span class="fa fa-search"></span> </button>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isDashBoard" class="table_container">
+                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsList" [isReadOnly]="false" [selectionMode]="'Row'" [autoSizeMode]="'Headers'"
+                    [headersVisibility]="'Column'" style="height: 250px;" #flex>
+                    <wj-flex-grid-filter [filterColumns]="['clientCode', 'displayName_','depositoryAccountNo','contactDetail.identificationType','commissionSlabMaster.slabNameDisplay_','contactDetail.cellNo','agent.agentCode','contactDetail.profession','contactDetail.email','active']"></wj-flex-grid-filter>
+                    <wj-flex-grid-column [header]="'Translation.Uni-Code' | translate" [align]="'left'" [binding]="'clientCode'" [width]="'0.25*'" [minWidth]="20"></wj-flex-grid-column>
+                    <wj-flex-grid-column [header]="'Translation.Name' | translate" [align]="'left'" [binding]="'displayName_'" [width]="'0.25*'" [minWidth]="20"></wj-flex-grid-column>
+                    <wj-flex-grid-column [header]="'Translation.CDC Code' | translate" [align]="'left'" [binding]="'depositoryAccountNo'" [width]="'0.25*'"
+                        [minWidth]="20"></wj-flex-grid-column>
+                        <wj-flex-grid-column [header]="'CNIC'" [align]="'left'" [binding]="'contactDetail.identificationType'" [width]="'0.25*'"
+                        [minWidth]="20"></wj-flex-grid-column>
+                        <wj-flex-grid-column [header]="'Translation.Com-Slab' | translate" [align]="'left'" [binding]="'commissionSlabMaster.slabNameDisplay_'" [width]="'0.25*'"
+                        [minWidth]="20"></wj-flex-grid-column>
+                        <wj-flex-grid-column [header]="'Translation.Mobile' | translate" [align]="'left'" [binding]="'contactDetail.cellNo'" [width]="'0.25*'"
+                        [minWidth]="20"></wj-flex-grid-column>
+                        <wj-flex-grid-column [header]="'Translation.Agent' | translate" [align]="'left'" [binding]="'agent.agentCode'" [width]="'0.2*'"
+                        [minWidth]="20"></wj-flex-grid-column>
+                    <wj-flex-grid-column [header]="'Translation.Branch' | translate" [align]="'left'" [binding]="'participantBranch.branchCode'" [width]="'0.15*'" [minWidth]="20"></wj-flex-grid-column>
+                    <wj-flex-grid-column [header]="'Translation.Email' | translate" [align]="'left'" [binding]="'contactDetail.email'" [width]="'0.3*'"
+                    [minWidth]="20"></wj-flex-grid-column>           
+                    <wj-flex-grid-column [header]="'Translation.Control Account' | translate" [align]="'left'" [binding]="'chartOfAccount.glCode'" [width]="'0.3*'"
+                    [minWidth]="20"></wj-flex-grid-column>   
+                    <wj-flex-grid-column [header]="'Translation.Risk' | translate" [align]="'left'" [binding]="'risk'" [width]="'0.15*'"
+                    [minWidth]="20"></wj-flex-grid-column> 
+                    <wj-flex-grid-column [header]="'Translation.Profession' | translate" [align]="'left'" [binding]="'contactDetail.profession'" [width]="'0.25*'"
+                    [minWidth]="20"></wj-flex-grid-column> 
+                    <wj-flex-grid-column [header]="'Translation.Client Type' | translate" [align]="'left'" [binding]="'clientType'" [width]="'0.25*'"
+                    [minWidth]="20"></wj-flex-grid-column>    
+                    <wj-flex-grid-column [header]="'Translation.Status' | translate" [align]="'left'" [binding]="'statusCode'" [width]="'0.25*'"
+                    [minWidth]="20"></wj-flex-grid-column>         
+                    <wj-flex-grid-column [header]="'Common.Active' | translate" [binding]="'active'" [width]="'0.18*'" [minWidth]="10"></wj-flex-grid-column>
+                    <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.15*'" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)">
+        
+                        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                            <img class="gridImg" 
+                            src="assets/img/edit_orange.png" title="{{ 'Translation.Edit' | translate }}" (click)="onGetClientClientId()"  />
+                           
+        
+                        </ng-template>
+                    </wj-flex-grid-column>
+        
+                </wj-flex-grid>
+        
+            </div>
+            <wj-flex-grid *ngIf="isDashBoard" class="dashboard_data_grid" [isReadOnly]="true" [itemsSource]="itemsList" [isReadOnly]="false"
+                [selectionMode]="'Row'" [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 180px;" #flex>
+                <wj-flex-grid-column [header]="'Translation.Client Code' | translate" [align]="'left'" [binding]="'clientCode'" [width]="'0.2*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Translation.Client Name' | translate " [align]="'left'" [binding]="'displayName_'" [width]="'0.2*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Translation.Depository Account No' | translate" [align]="'left'" [binding]="'depositoryAccountNo'" [width]="'0.15*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Translation.Branch' | translate" [align]="'left'" [binding]="'participantBranch.branchCode'" [width]="'0.15*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Common.Active' | translate" [binding]="'active'" [width]="'0.075*'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.075*'" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)">
+        
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                        <!--<button class="on_edit_button" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)" type="button" data-target="#add_new"
+                            data-toggle="modal" (click)="onEditAction()" title="Edit" role="button" tooltipPlacement="right"><img src="assets/img/edit_orange.png" /></button>-->
+                        <!--
+                        <input type="image" src="assets/img/edit_orange.png" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)"
+                            class="btTxt submit" (click)="onEditAction()" title="Edit" data-target="#add_new" data-toggle="modal" data-backdrop="static"
+                            id="btnEdit" />-->
+                        <button id="btnEdit" class="on_edit_button" role="button" (click)="onEditAction()" title="{{ 'Translation.Edit' | translate }}" data-target="#add_new" data-toggle="modal"
+                            data-backdrop="static"> <img src="assets/img/edit_orange.png"/> </button>
+        
+                    </ng-template>
+                </wj-flex-grid-column>
+        
+            </wj-flex-grid>
+        
+       
+            <div *ngIf="!isDashBoard" class="btn-group col-xs-12 align-right">
+                <!-- Paginator -->
+                <wj-collection-view-pager [cv]="flex?.collectionView"></wj-collection-view-pager>
+                <!-- page size -->
+                <wj-menu [(value)]="pageSize" [header]="'Common.Page Size' | translate">
+                    <wj-menu-item [value]="0">{{ 'Common.No Paging' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="5">5 {{ 'Common.items' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="10">10 {{ 'Common.items' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="20">20 {{ 'Common.items' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="30">30 {{ 'Common.items' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="50">50 {{ 'Common.items' | translate }}</wj-menu-item>
+                    <wj-menu-item [value]="100">100 {{ 'Common.items' | translate }}</wj-menu-item>
+                  </wj-menu>
+            </div>
+
+
+          
+                <client-registration [class.displayNone]="isNewActionForm === false"></client-registration>
+            
+           
+      
+      
+            </section>
+        
+        
+        <!-- Modal -->
+        <!-- <div id="add_new" class="modal fade" role="dialog">
+            <div class="modal-dialog client_model">
+                <form class="form-horizontal form-label-left parsleyjs" [formGroup]="myForm" (ngSubmit)="onSaveAction(myForm.value, myForm.valid)"
+                    data-parsley-priority-enabled="false" novalidate="novalidate">
+                  
+                    <div class="modal-content">
+        
+                  
+        
+                        <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                            role="form" [formGroup]="myForm" (ngSubmit)="onSaveAction(myForm.value, myForm.valid)">
+                            <div class="modal-body modal-no-border">
+        
+                                <div class="row">
+                                    <div class="col-sm-3 modal_left">
+                                        <div class="wizard_Logo">
+                                            <img class="formImg" src="assets/img/Clients.png" />
+                                            <h4>{{ 'Translation.Client Setup' | translate }}</h4>
+                                        </div>
+                                        <div class="clientSetup_tabs">
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-toggle="tab" href="#tab1" (click)="onTabChangeEvent('BI')" role="tab" aria-controls="basic"
+                                                        aria-expanded="true" #BIAnchorTag>
+                                                        <div class="client_number">1</div>
+                                                        <h3>{{ 'Translation.Basic' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="assumtion" (click)="onTabChangeEvent('CON')"
+                                                        #CONAnchorTag aria-expanded="false">
+                                                        <div class="client_number">2</div>
+                                                        <h3>{{ 'Translation.Contact' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" *ngIf="showOnlineAccess">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="assumtion" (click)="onTabChangeEvent('SA')"
+                                                        #SAAnchorTag aria-expanded="false">
+                                                        <div class="client_number">2a</div>
+                                                        <h3>{{ 'Translation.User' | translate }} </h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" *ngIf="showJoint">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab4" role="tab" aria-controls="assumtion" (click)="onTabChangeEvent('JA')"
+                                                        #JAAnchorTag aria-expanded="false">
+                                                        <div class="client_number">2b</div>
+                                                        <h3>{{ 'Translation.Joint' | translate }} </h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab10" role="tab" aria-controls="assumtion" (click)="onTabChangeEvent('BEN')"
+                                                        #BENAnchorTag aria-expanded="false">
+                                                        <div class="client_number">3</div>
+                                                        <h3>{{ 'Translation.Beneficiary' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab5" role="tab" aria-controls="assumtion" (click)="onTabChangeEvent('CRS')"
+                                                        #CRSAnchorTag aria-expanded="false">
+                                                        <div class="client_number">4</div>
+                                                        <h3>{{ 'Translation.Risk' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab6" role="tab" (click)="onTabChangeEvent('AM')" #AMAnchorTag>
+                                                        <div class="client_number">5</div>
+                                                        <h3>{{ 'Translation.Markets' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab7" role="tab" (click)="onTabChangeEvent('CU')" #CUAnchorTag>
+                                                        <div class="client_number">6</div>
+                                                        <h3>{{ 'Translation.Custodians' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab8" role="tab" (click)="onTabChangeEvent('BA')" #BAAnchorTag>
+                                                        <div class="client_number">7</div>
+                                                        <h3>{{ 'Translation.Bank' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tab9" role="tab" (click)="onTabChangeEvent('DOC')" #DOCAnchorTag>
+                                                        <div class="client_number">8</div>
+                                                        <h3>{{ 'Translation.Document' | translate }}</h3>
+                                                        <p>{{ 'Translation.Text details about client basics is placed here' | translate }}</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9 client_details">
+                                        <div class="tab-content" id="myTabContent">
+                                            <div role="tabpanel" class="tab-pane active in" id="tab1">
+        
+                                                <div class="row">
+                                                    <div class="col-sm-9 client_detail_box">
+                                                        <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                        <div class="dialog_detailBOx">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Client Code' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" [isRequired]="true" formControlName="clientCode" [(ngModel)]="selectedItem.clientCode" tabindex="1"
+                                                                        maxlength="25" required [isDisabled]="isEditing" #clientCode>
+                                                                    </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['clientCode'].hasError('required')" [hidden]="myForm.controls.clientCode.valid || (myForm.controls.clientCode.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Client Code' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['clientCode'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Client Code' | translate }}.</div>
+                                                                </div>
+        
+                                                                <div class="col-sm-6 fields_box" *ngIf="!isEditing">
+                                                                    <label for="search-input">{{ 'Translation.GL Code' | translate }}<span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" [isRequired]="true" maxlength="25" (keyup)="onGLCodeChangeEvent($event)" formControlName="glCode" tabindex="2"
+                                                                        [(ngModel)]="glCode_" required #clientGLCodeField> </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['glCode'].hasError('required')" [hidden]="myForm.controls.glCode.valid || (myForm.controls.glCode.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.GL Code' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['glCode'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.GL Code' | translate }}.</div>
+                                                                </div>
+        
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Chart of Account' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" [isRequired]="false" [isDisabled]="true" formControlName="coaCode" [(ngModel)]="coaCode_" 
+                                                                        required>
+                                                                    </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['coaCode'].hasError('required')" [hidden]="myForm.controls.coaCode.valid || (myForm.controls.coaCode.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Chart of Account' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['coaCode'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Chart of Account' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.GL Description' | translate }}<span class="validation">*</span></label>
+                                                                    <wj-input-mask tabindex="3" class="wijmo_style" [isRequired]="false" formControlName="coaDesc" maxlength="50" [(ngModel)]="selectedItem.chartOfAccount.glDesc"
+                                                                        required>
+                                                                    </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['coaDesc'].hasError('required')" [hidden]="myForm.controls.coaDesc.valid || (myForm.controls.coaDesc.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.GL Description' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['coaDesc'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.GL Description' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.CDC Code' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-input-mask tabindex="5" class="wijmo_style" [isRequired]="true" (lostFocus)="tabFocusChanged1()" formControlName="depositoryNumber"
+                                                                        maxlength="25" [(ngModel)]="selectedItem.depositoryAccountNo">
+                                                                    </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['depositoryNumber'].hasError('required')" [hidden]="myForm.controls.depositoryNumber.valid || (myForm.controls.depositoryNumber.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.CDC Code' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['depositoryNumber'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.CDC Code' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-7 fields_box">
+                                                                    <label for="startDate">{{ 'Translation.Levies' | translate }} </label>
+                                                                    <wj-multi-select tabindex="4" id="levyId" class="wijmo_style" [placeholder]="'Select'" formControlName="levyId" [isEditable]="true" [itemsSource]="leviesList"
+                                                                        displayMemberPath="levyCode" #cmbLevy  [isRequired]="true"></wj-multi-select>
+                                                                    <div *ngIf="myForm.controls['levyId'].hasError('required') || myForm.controls['levyId'].hasError('pattern')" [hidden]="myForm.controls['levyId'].valid || (myForm.controls['levyId'].pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Levies' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                        
+                                                                </div>
+
+                                                                                                                     
+                                                               <div class="col-sm-6 fields_box">
+                                                                   <label for="account_category">{{ 'Translation.Account Category' | translate }} <span class="validation">*</span></label>
+                                                                   <wj-combo-box tabindex="6" id="account_category" class="wijmo_style"  name="accountCategory" formControlName="accountCategory" [isEditable]="true" [itemsSource]="accountCategoryList"
+                                                                   displayMemberPath="name" #accountCat selectedValuePath="accountCategoryId" [(ngModel)]="selectedItem.accountCategory.accountCategoryId"  [isRequired]="true"></wj-combo-box>
+                                                                <div *ngIf="myForm.controls['accountCategory'].hasError('required')" [hidden]="myForm.controls['accountCategory'].valid || (myForm.controls['accountCategory'].pristine && !isSubmitted)"
+                                                                   class="text-danger">{{ 'Translation.Account Category' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                               </div>
+                                                                                                                    
+                                                                
+                                                                <div class="col-sm-12 col-lg-12 fields_box wizard_checkBox">
+                                                                   
+                                                                    <div class="abc-checkbox abc-checkbox-primary ">
+                                                                        <input type="checkbox" tabindex="7" #active1 [(ngModel)]="selectedItem.active" id="active" formControlName="active">
+                                                                        <label for="active">{{ 'Common.Active' | translate }}</label>
+                                                                    </div>
+                                                                    <div class="abc-checkbox abc-checkbox-primary">                                                                
+                                                                        <input type="checkbox" tabindex="8" [(ngModel)]="selectedItem.sendEmail" id="sendEmail" formControlName="sendEmail">
+                                                                        <label for="sendEmail">{{ 'Translation.Send Email' | translate }}</label>
+                                                                    </div>
+                                                                    <div class="abc-checkbox abc-checkbox-primary">                                                                
+                                                                        <input type="checkbox" tabindex="9" [(ngModel)]="selectedItem.proprietaryAccount" id="proprietaryAccount" formControlName="proprietaryAccount">
+                                                                        <label for="proprietaryAccount">{{ 'Translation.Proprietary Account' | translate }}</label>
+                                                                    </div>  
+                                                                </div> 
+                                                                <div class="col-sm-12 col-lg-12 fields_box wizard_checkBox">                                                        
+                                                                    <div class="abc-checkbox abc-checkbox-primary">                                                                
+                                                                        <input type="checkbox" tabindex="10" [(ngModel)]="selectedItem.sendMail" id="sendMail" formControlName="sendMail">
+                                                                        <label for="sendMail">{{ 'Translation.Mail' | translate }} (TCS)</label>
+                                                                    </div> 
+                                                                    <div class="abc-checkbox abc-checkbox-primary">                                                                
+                                                                        <input type="checkbox" tabindex="11" [(ngModel)]="selectedItem.sendSms" id="sendSms" formControlName="sendSms">
+                                                                        <label for="sendSms">{{ 'Translation.Send SMS' | translate }}</label>
+                                                                    </div>                                                           
+                                                                    <div class="abc-checkbox abc-checkbox-primary">                                                                
+                                                                        <input type="checkbox" tabindex="12" [(ngModel)]="selectedItem.generateKits" id="generateKits" formControlName="generateKits">
+                                                                        <label for="generateKits">{{ 'Translation.Generate Kits Files' | translate }}</label>
+                                                                    </div>
+                                                                    <div class="abc-checkbox abc-checkbox-primary" *ngIf="showOnlineAccess">                                                                
+                                                                        <input type="checkbox" tabindex="13" (blur)="tabFocusChanged2()" [(ngModel)]="selectedItem.onlineClient" id="onlineClient"
+                                                                            formControlName="onlineClient" (change)="onOnlineAccessEvent($event)">
+                                                                        <label for="onlineClient">{{ 'Translation.Online Access' | translate }}</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="commissionSlab">{{ 'Translation.Commission Slab' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-combo-box id="commissionSlab" class="wijmo_style" name="commissionSlab" [itemsSource]="commissionSlabList" displayMemberPath="slabNameDisplay_"
+                                                                        selectedValuePath="commissionSlabId" [isRequired]="true" (ngModelChange)="onCommissioSlabChangeEvent($event)"
+                                                                        [(ngModel)]="selectedItem.commissionSlabMaster.commissionSlabId"
+                                                                        formControlName="commissionSlabId" #commissionSlabId [isEditable]="true" tabindex="14">
+                                                                    </wj-combo-box>
+                                                                    <div *ngIf="myForm.controls['commissionSlabId'].hasError('required')" [hidden]="myForm.controls.commissionSlabId.valid || (myForm.controls.commissionSlabId.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Commission Slab' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="participantBranch">{{ 'Translation.Participant Branch' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-combo-box id="participantBranch" class="wijmo_style" name="participantBranch" [itemsSource]="participantBranchList" displayMemberPath="displayName_"
+                                                                        selectedValuePath="branchId" [isRequired]="true" [(ngModel)]="selectedItem.participantBranch.branchId"
+                                                                        formControlName="participantBranch" [isEditable]="true" tabindex="15">
+                                                                    </wj-combo-box>
+                                                                    <div *ngIf="myForm.controls['participantBranch'].hasError('required')" [hidden]="myForm.controls.participantBranch.valid || (myForm.controls.participantBranch.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Participant Branch' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="agent">{{ 'Translation.Agent' | translate }}</label>
+                                                                    <wj-combo-box id="agent" class="wijmo_style" (lostFocus)="tabFocusChanged3()" name="agent" [itemsSource]="agentList" displayMemberPath="displayName_"
+                                                                        selectedValuePath="agentId" [isRequired]="false" [(ngModel)]="selectedItem.agent.agentId" tabindex="16"
+                                                                        formControlName="agentId" [isEditable]="true">
+                                                                    </wj-combo-box>
+                                                                </div>
+                                                              
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Account Type' | translate }}  <span class="validation">*</span></label>
+                                                                    <wj-combo-box class="wijmo_style" tabindex="3" id="accountType"   #accountType [isEditable]="true"
+                                                                        [itemsSource]="accountTypeInvestorList" displayMemberPath="description"
+                                                                        selectedValuePath="accTypeId" [(ngModel)]="selectedItem.accountTypeNew.accTypeId" [ngModelOptions]="{standalone: true}"
+                                                                        [isRequired]="true" (ngModelChange)="onChangeAccountTypeInvestor($event)"></wj-combo-box>
+                                                                    
+                                                                </div>
+
+
+
+                                                                <div class="col-sm-12 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Remarks' | translate }}</label>
+                                                                    <wj-input-mask class="wijmo_style" [isRequired]="false" [(ngModel)]="selectedItem.reference" formControlName="reference" tabindex="19"
+                                                                        #reference maxlength="50">
+                                                                    </wj-input-mask>
+                                                                </div>
+        
+                                                            </div>
+        
+                                                            <div class="tabrow wizard_data" *ngIf="showIndividual">
+                                                                <div class="row">
+                                                                    <h3>{{ 'Translation.Individual Detail' | translate }}<span class="fw-semi-bold"></span></h3>
+                                                                    <div class="col-sm-12"></div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.First Name' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="20" id="firstName" formControlName="firstName" maxlength="30" [(ngModel)]="selectedItem.contactDetail.firstName"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['firstName'].hasError('required')" [hidden]="myForm.controls.firstName.valid || (myForm.controls.firstName.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.First Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="myForm.controls['firstName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.First Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Middle Name' | translate }}</label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="21" id="middleName" formControlName="middleName" maxlength="30" [(ngModel)]="selectedItem.contactDetail.middleName">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['middleName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Middle Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Last Name' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="22" id="lastName" formControlName="lastName" maxlength="30" [(ngModel)]="selectedItem.contactDetail.lastName"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['lastName'].hasError('required')" [hidden]="myForm.controls.lastName.valid || (myForm.controls.lastName.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Last Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="myForm.controls['lastName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Last Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Father/Husband Name' | translate }} </label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="23" id="fatherHusbandName" formControlName="fatherHusbandName" maxlength="30"
+                                                                            [(ngModel)]="selectedItem.contactDetail.fatherHusbandName">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['fatherHusbandName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Father/Husband Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Gender' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="24" id="gender" formControlName="gender" [isEditable]="true" [itemsSource]="genderList"
+                                                                            displayMemberPath="name" selectedValuePath="code" [(ngModel)]="selectedItem.contactDetail.gender"
+                                                                            [isRequired]="true"></wj-combo-box>
+                                                                        <div *ngIf="myForm.controls['gender'].hasError('required')" [hidden]="myForm.controls.gender.valid || (myForm.controls.gender.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Gender' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>                                                           
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Identification Type' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="25" id="identificationTypeId" formControlName="identificationTypeId" [isEditable]="true"
+                                                                            [itemsSource]="identificationTypeList" displayMemberPath="identificationType"
+                                                                            selectedValuePath="identificationTypeId" [(ngModel)]="selectedItem.contactDetail.identificationTypeId"
+                                                                            [isRequired]="true"></wj-combo-box>
+                                                                        <div *ngIf="myForm.controls['identificationTypeId'].hasError('required')" [hidden]="myForm.controls.identificationTypeId.valid || (myForm.controls.identificationTypeId.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Identification Type' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Identification Number' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="26" id="identificationType" formControlName="identificationType" maxlength="50"
+                                                                            [(ngModel)]="selectedItem.contactDetail.identificationType"
+                                                                            required [isRequired]="true">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['identificationType'].hasError('required')" [hidden]="myForm.controls.identificationType.valid || (myForm.controls.identificationType.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Identification Number' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                  
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Issue Date' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-input-date  [showYearPicker]="false" tabindex="27" id="idIssueDate" formControlName="idIssueDate" max="{{today}}" [(ngModel)]="selectedItem.contactDetail.idIssueDate"
+                                                                            [format]="'yyyy-MM-dd'">
+                                                                        </wj-input-date>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Expiry Date' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-input-date  [showYearPicker]="false" tabindex="28" id="idExpDate" formControlName="idExpDate" min="{{today}}" [(ngModel)]="selectedItem.contactDetail.idExpDate"
+                                                                            [format]="'yyyy-MM-dd'">
+                                                                        </wj-input-date>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Issue Place' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" id="issuePlaceId" tabindex="29" formControlName="issuePlaceId" [isEditable]="true" [itemsSource]="countryList"
+                                                                            displayMemberPath="countryName" selectedValuePath="countryId"
+                                                                            [(ngModel)]="selectedItem.contactDetail.issuePlaceId" required></wj-combo-box>
+                                                                        <div *ngIf="myForm.controls['issuePlaceId'].hasError('required')" [hidden]="myForm.controls.issuePlaceId.valid || (myForm.controls.issuePlaceId.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Issue Place' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Date of Birth' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-input-date [showYearPicker]="false" tabindex="30" id="dob" formControlName="dob" max="{{today}}" [(ngModel)]="selectedItem.contactDetail.dob"
+                                                                            [format]="'yyyy-MM-dd'">
+                                                                        </wj-input-date>
+                                                                    </div>
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Profession' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="31" id="professionId" (lostFocus)="tabFocusChanged5()" formControlName="professionId"
+                                                                            [isEditable]="true" [itemsSource]="professionList" displayMemberPath="professionCode"
+                                                                            selectedValuePath="professionId" [(ngModel)]="selectedItem.contactDetail.professionId"></wj-combo-box>
+        
+                                                                    </div>
+                                                                          
+                                                                </div>
+                                                            </div>
+        
+                                                            <div class="tabrow wizard_data" *ngIf="showCorporate">
+                                                                <div class="row">
+                                                                    <h3>{{ 'Translation.Corporate Detail' | translate }}<span class="fw-semi-bold"></span></h3>
+                                                                    <div class="col-sm-12"></div>
+        
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Company Name' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="34" id="companyName" formControlName="companyName" maxlength="50" [(ngModel)]="selectedItem.contactDetail.companyName"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['companyName'].hasError('required')" [hidden]="myForm.controls.companyName.valid || (myForm.controls.companyName.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Company Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="myForm.controls['companyName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Company Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">TIN {{ 'Translation.Number' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="35" id="registrationNo" formControlName="registrationNo" maxlength="50" [(ngModel)]="selectedItem.contactDetail.registrationNo"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="myForm.controls['registrationNo'].hasError('required')" [hidden]="myForm.controls.registrationNo.valid || (myForm.controls.registrationNo.pristine && !isSubmitted)"
+                                                                            class="text-danger">TIN {{ 'Translation.Number' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="myForm.controls['registrationNo'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} TIN {{ 'Translation.Number' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Industry' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="36" id="industryId" formControlName="industryId" [isEditable]="true" [itemsSource]="industryList"
+                                                                            displayMemberPath="industryName" selectedValuePath="industryId"
+                                                                            [(ngModel)]="selectedItem.contactDetail.industryId"></wj-combo-box>
+                                                                        <div *ngIf="myForm.controls['industryId'].hasError('required')" [hidden]="myForm.controls.industryId.valid || (myForm.controls.industryId.pristine && !isSubmitted)"
+                                                                            class="text-danger">{{ 'Translation.Industry' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input">{{ 'Translation.Residence Status' | translate }} <span class="validation">*</span></label>
+                                                                <wj-combo-box class="wijmo_style" tabindex="37" id="residenceStatus" formControlName="residenceStatus" [isEditable]="true" [itemsSource]="residenceStatusList"
+                                                                    displayMemberPath="name" selectedValuePath="code" [(ngModel)]="selectedItem.contactDetail.residenceStatus"
+                                                                    [isRequired]="true"></wj-combo-box>
+                                                                <div *ngIf="myForm.controls['residenceStatus'].hasError('required')" [hidden]="myForm.controls.residenceStatus.valid || (myForm.controls.residenceStatus.pristine && !isSubmitted)"
+                                                                    class="text-danger">{{ 'Translation.Residence Status' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                            </div>
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input">{{ 'Translation.Risk' | translate }} <span class="validation">*</span></label>
+                                                                <wj-combo-box class="wijmo_style" tabindex="38" id="risk" formControlName="risk" [isEditable]="true" [itemsSource]="riskList"
+                                                                    displayMemberPath="name" selectedValuePath="code" [(ngModel)]="selectedItem.risk"
+                                                                    [isRequired]="true"></wj-combo-box>
+                                                                <div *ngIf="myForm.controls['risk'].hasError('required')" [hidden]="myForm.controls.risk.valid || (myForm.controls.risk.pristine && !isSubmitted)"
+                                                                    class="text-danger">{{ 'Translation.Risk' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                            </div>
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input">NTN </label>
+                                                                <wj-input-mask class="wijmo_style" tabindex="39" id="ntnNo" formControlName="ntnNo" maxlength="50"
+                                                                            [(ngModel)]="selectedItem.contactDetail.ntnNo"
+                                                                            required [isRequired]="true">
+                                                                        </wj-input-mask>                                                       
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="row"> 
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input">{{ 'Translation.Income Source' | translate }} <span class="validation">*</span></label>
+                                                                <wj-combo-box class="wijmo_style" tabindex="40" id="incomeSourcee" 
+                                                                    formControlName="incomeSourcee" [isEditable]="true" [itemsSource]="incomeSourceList"
+                                                                    displayMemberPath="incomeSourceDesc" selectedValuePath="incomeSourceId" 
+                                                                    [(ngModel)]="selectedItem.incomeSource.incomeSourceId"
+                                                                    required></wj-combo-box> 
+                                                                <div *ngIf="myForm.controls['incomeSourcee'].hasError('required')" [hidden]="myForm.controls.incomeSourcee.valid || (myForm.controls.incomeSourcee.pristine && !isSubmitted)"
+                                                                    class="text-danger">{{ 'Translation.Income Source' | translate }} {{ 'Translation.is required' | translate }}.</div>                                                           
+                                                            </div>
+                                                            
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input"> {{ 'Translation.Annual Gross Income' | translate }} </label>
+                                                                <wj-input-number class="wijmo_style" tabindex="41" id="annualGrossIncome" formControlName="annualGrossIncome" 
+                                                                    maxlength="20" [(ngModel)]="selectedItem.annualGrossIncome">
+                                                                </wj-input-number>
+                                                            </div>
+        
+                                                            <div class="col-sm-4 fields_box">
+                                                                <label for="search-input"> {{ 'Translation.Income Percentage' | translate }}(%) </label>
+                                                                <wj-input-number class="wijmo_style" tabindex="42" id="incomePercentage" 
+                                                                formControlName="incomePercentage" 
+                                                                maxlength="5" [(ngModel)]="selectedItem.incomePercentage">
+                                                            </wj-input-number>
+        
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="col-sm-3 client_right">
+                                                        <h1>{{ 'Translation.Basic' | translate }}</h1>
+                                                        <div class="contact_details">
+                                                            <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                    {{selectedItem.contactDetail.lastName}}
+                                                                </h3>
+                                                                <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                            </div>
+                                                            <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                            </div>
+        
+                                                            <div *ngIf="selectedItem.clientCode != '' ">
+                                                                <h3>{{selectedItem.clientCode}}</h3>
+                                                                <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row client_oDetail">
+        
+                                                            <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                </p>
+                                                            </div>
+        
+                                                            <div class="col-sm-12" style="text-align: left; padding:5px; text-justify: inter-word;">
+                                                                <p style="width:90%;">{{ 'Translation.Define client for the firm, including individual or corporate, having
+                                                                    their own set of parameters accordingly. All other parameters
+                                                                    pertaining to clients (i.e. Risk Parameters, Market Access, Banks
+                                                                    Associations etc.) can be configured for operational purposes' | translate }}.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab2" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="col-sm-9 client_detail_box">
+                                                        <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                        <div class="dialog_detailBOx">
+                                                            <div class="row wizard_data" style="padding-left:6px;padding-right:6px;">
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Country' | translate }}  <span class="validation">*</span></label>
+                                                                    <wj-combo-box class="wijmo_style" id="countryId" tabindex="1" formControlName="countryId" [isEditable]="true" [itemsSource]="countryList"
+                                                                        displayMemberPath="countryName" (ngModelChange)="onCountryChangeEvent($event)"
+                                                                        selectedValuePath="countryId" [(ngModel)]="selectedItem.contactDetail.countryId"
+                                                                        required></wj-combo-box>
+                                                                    <div *ngIf="myForm.controls['countryId'].hasError('required')" [hidden]="myForm.controls.countryId.valid || (myForm.controls.countryId.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Country' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Province' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-combo-box class="wijmo_style" id="provinceId" tabindex="2" formControlName="provinceId" [isEditable]="true" [itemsSource]="provinceList"
+                                                                        displayMemberPath="provinceDesc" (ngModelChange)="onProvinceChangeEvent($event)"
+                                                                        selectedValuePath="provinceId" [(ngModel)]="selectedItem.contactDetail.provinceId"
+                                                                        required></wj-combo-box>
+                                                                    <div *ngIf="myForm.controls['provinceId'].hasError('required')" [hidden]="myForm.controls.provinceId.valid || (myForm.controls.provinceId.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Province' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+                                                                
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.City' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-combo-box class="wijmo_style" #cmbCityId id="cityId" tabindex="3" formControlName="cityId" [isEditable]="true" [itemsSource]="cityList"
+                                                                        displayMemberPath="cityName" selectedValuePath="cityId" [(ngModel)]="selectedItem.contactDetail.cityId"
+                                                                        required></wj-combo-box>
+                                                                    <div *ngIf="myForm.controls['cityId'].hasError('required')" [hidden]="myForm.controls.cityId.valid || (myForm.controls.cityId.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.City' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-12 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Address' | translate }} 1<span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="4" id="address" formControlName="address" maxlength="250" [(ngModel)]="selectedItem.contactDetail.address1"
+                                                                        required> </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['address'].hasError('required')" [hidden]="myForm.controls.address.valid || (myForm.controls.address.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Address' | translate }} 1 {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['address'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Address' | translate }} 1.</div>
+                                                                </div>
+                                                                <div class="col-sm-12 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Address' | translate }} 2</label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="5" id="address2" formControlName="address2" maxlength="250" [(ngModel)]="selectedItem.contactDetail.address2"
+                                                                        required> </wj-input-mask>
+                                                                </div>
+                                                                <div class="col-sm-12 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Address' | translate }} 3</label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="6" id="address3" formControlName="address3" maxlength="250" [(ngModel)]="selectedItem.contactDetail.address3"
+                                                                        required> </wj-input-mask>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Postal Code' | translate }}  <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="7" id="postalCode" formControlName="postalCode" maxlength="10" [(ngModel)]="selectedItem.contactDetail.postalCode"
+                                                                        required> </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['postalCode'].hasError('required')" [hidden]="myForm.controls.postalCode.valid || (myForm.controls.postalCode.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Postal Code' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['postalCode'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Postal Code' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Phone Number' | translate }}.  <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="8" id="phone1" formControlName="phone1" maxlength="20" [(ngModel)]="selectedItem.contactDetail.phone1"
+                                                                        required></wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['phone1'].hasError('required')" [hidden]="myForm.controls.phone1.valid || (myForm.controls.phone1.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Phone Number' | translate }}. {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['phone1'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Phone Number' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Mobile Number' | translate }}.  <span class="validation"></span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="9" id="cellNo" formControlName="cellNo" maxlength="20" [(ngModel)]="selectedItem.contactDetail.cellNo"></wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['cellNo'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Mobile Number' | translate }}.</div>
+                                                                </div>
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="search-input">{{ 'Translation.Email' | translate }}  <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="10" placeholder="abc@xyz.com" id="email" formControlName="email" maxlength="100"
+                                                                        [(ngModel)]="selectedItem.contactDetail.email"></wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['email'].hasError('required')" [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Email' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['email'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Email' | translate }}.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="col-sm-3 client_right">
+                                                        <h1>{{ 'Translation.Contact' | translate }}</h1>
+                                                        <div class="contact_details">
+                                                            <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                    {{selectedItem.contactDetail.lastName}}
+                                                                </h3>
+                                                                <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                            </div>
+                                                            <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                            </div>
+        
+                                                            <div *ngIf="selectedItem.clientCode != '' ">
+                                                                <h3>{{selectedItem.clientCode}}</h3>
+                                                                <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row client_oDetail">
+        
+                                                            <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                            </div>
+                                                            <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                            </div>
+        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab3" *ngIf="showOnlineAccess" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="col-sm-9 client_detail_box">
+                                                        <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                        <div class="dialog_detailBOx">
+        
+                                                            <div class="row wizard_data">
+        
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="userName">{{ 'Translation.User Name' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="1" id="userName" formControlName="userName" maxlength="30" [(ngModel)]="selectedItem.user.userName"
+                                                                        required [isRequired]="true"> </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['userName'].hasError('required')" [hidden]="myForm.controls.userName.valid || (myForm.controls.userName.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.User Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['userName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.User Name' | translate }}.</div>
+                                                                </div>
+        
+        
+                                                                <div class="col-sm-6 fields_box">
+                                                                    <label for="userEmail">{{ 'Translation.Email' | translate }} <span class="validation">*</span></label>
+                                                                    <wj-input-mask class="wijmo_style" tabindex="2" id="userEmail" formControlName="userEmail" maxlength="100" [(ngModel)]="selectedItem.user.email"
+                                                                        required [isRequired]="true"> </wj-input-mask>
+                                                                    <div *ngIf="myForm.controls['userEmail'].hasError('required')" [hidden]="myForm.controls.userEmail.valid || (myForm.controls.userEmail.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Email' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['userEmail'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Email' | translate }}.</div>
+                                                                </div>
+        
+                                                                <div class="col-sm-6 fields_box" *ngIf="!isEditing">
+                                                                    <label for="password">{{ 'Translation.Password' | translate }} <span class="validation">*</span></label>
+        
+                                                                    <input type="password" class="wijmo_style pass" minlength="8" maxlength="32" tabindex="3" required placeholder="Password" (ngModelChange)="onNewPasswordChange($event)"
+                                                                        formControlName="password" [(ngModel)]="selectedItem.user.password"
+                                                                    />
+        
+                                                                    <div *ngIf="myForm.controls['password'].hasError('required')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    <div class="bg-gray-lighter m-t-2">
+                                                                        <progress class="progress progress-sm progress-warning" value="100" max="100" [class.progress-danger]="passwordStrength >= 0 && passwordStrength < 40"
+                                                                            [class.progress-warning]="passwordStrength >= 40 && passwordStrength < 80"
+                                                                            [class.progress-success]="passwordStrength >= 80 && passwordStrength <= 100"
+                                                                            [style.width.%]="passwordStrength"></progress>
+                                                                    </div>
+        
+                                                                </div>
+        
+                                                                <div class="col-sm-6 fields_box" *ngIf="!isEditing">
+                                                                    <label for="confirmPassword">{{ 'Translation.Confirm Password' | translate }} <span class="validation">*</span></label>
+        
+                                                                    <input type="password" class="wijmo_style pass" tabindex="4" required placeholder="Re-enter Password" minlength="8" maxlength="32" formControlName="confirmPassword"
+                                                                        [(ngModel)]="confirmPassword_" />
+        
+                                                                    <div *ngIf="myForm.controls['confirmPassword'].hasError('required')" [hidden]="myForm.controls.confirmPassword.valid || (myForm.controls.confirmPassword.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Confirm Password' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                </div>
+        
+                                                                <div class="col-sm-8 fields_box wizard_checkBox">
+                                                                    <label for="search-input">&nbsp;&nbsp; <span class="validation"></span></label>
+                                                                    <div class="abc-checkbox abc-checkbox-primary">
+                                                                        <input type="checkbox" tabindex="5" [(ngModel)]="selectedItem.user.active" id="activeUser" formControlName="activeUser">
+                                                                        <label for="activeUser">{{ 'Common.Active' | translate }}</label>
+                                                                    </div>
+                                                                    <div class="abc-checkbox abc-checkbox-primary">
+                                                                    </div>
+                                                                    <div class="abc-checkbox abc-checkbox-primary">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-8 fields_box wizard_checkBox">
+                                                                    <div *ngIf="(myForm.controls['password'].value !='' &&  myForm.controls['confirmPassword'].value !='') && (myForm.controls['password'].value !=  myForm.controls['confirmPassword'].value)"
+                                                                        class="text-danger">
+                                                                        {{ 'Translation.Password and Confirm Password mismatch' | translate }}.
+                                                                    </div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('minlength')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password must be at least 8 characters' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('maxlength')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password must be at most 32 characters' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('repeatCharacterRegexRule')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password contains repeating characters' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('digitCharacterRule')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password should contain at least one digit' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('alphabeticalCharacterRule')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password should contain at least one alphabetical character' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('lowercaseCharacterRule')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password should contain at least one lowercase character' | translate }}.</div>
+                                                                    <div *ngIf="myForm.controls['password'].hasError('uppercaseCharacterRule')" [hidden]="myForm.controls.password.valid || (myForm.controls.password.pristine && !isSubmitted)"
+                                                                        class="text-danger">{{ 'Translation.Password should contain at least one uppercase character' | translate }}.
+                                                                    </div>
+        
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="col-sm-3 client_right">
+                                                        <h1>User</h1>
+                                                        <div class="contact_details">
+                                                            <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                    {{selectedItem.contactDetail.lastName}}
+                                                                </h3>
+                                                                <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                            </div>
+                                                            <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                            </div>
+        
+                                                            <div *ngIf="selectedItem.clientCode != '' ">
+                                                                <h3>{{selectedItem.clientCode}}</h3>
+                                                                <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row client_oDetail">
+        
+                                                            <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                            </div>
+                                                            <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                            </div>
+        
+                                                        </div>
+                                                    </div>
+        
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab4" *ngIf="showJoint" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="jointAccountForm" (ngSubmit)="onSaveJointAccountAction(jointAccountForm.value, jointAccountForm.valid)">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 client_detail_box">
+                                                            <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                            <div class="dialog_detailBOx">
+        
+                                                                <div class="row">
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.First Name' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="1" id="firstName" formControlName="firstName" maxlength="30" [(ngModel)]="selectedJointAccountItem.contactDetail.firstName"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="jointAccountForm.controls['firstName'].hasError('required')" [hidden]="jointAccountForm.controls.firstName.valid || (jointAccountForm.controls.firstName.pristine && !isSubmittedJointAccount)"
+                                                                            class="text-danger">{{ 'Translation.First Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="jointAccountForm.controls['firstName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.First Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Middle Name' | translate }}</label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="2" id="middleName" formControlName="middleName" maxlength="30" [(ngModel)]="selectedJointAccountItem.contactDetail.middleName">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="jointAccountForm.controls['middleName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Middle Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Last Name' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="3" id="lastName" formControlName="lastName" maxlength="30" [(ngModel)]="selectedJointAccountItem.contactDetail.lastName"
+                                                                            required [isRequired]="true"> </wj-input-mask>
+                                                                        <div *ngIf="jointAccountForm.controls['lastName'].hasError('required')" [hidden]="jointAccountForm.controls.lastName.valid || (jointAccountForm.controls.lastName.pristine && !isSubmittedJointAccount)"
+                                                                            class="text-danger">{{ 'Translation.Last Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="jointAccountForm.controls['lastName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Last Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Father/Husband Name' | translate }} </label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="4" id="fatherHusbandName" formControlName="fatherHusbandName" maxlength="30"
+                                                                            [(ngModel)]="selectedJointAccountItem.contactDetail.fatherHusbandName">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="jointAccountForm.controls['fatherHusbandName'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Father/Husband Name' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Gender' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="5" id="gender" formControlName="gender" [isEditable]="true" [itemsSource]="genderList"
+                                                                            displayMemberPath="name" selectedValuePath="code" [(ngModel)]="selectedJointAccountItem.contactDetail.gender"
+                                                                            [isRequired]="true"></wj-combo-box>
+                                                                        <div *ngIf="jointAccountForm.controls['gender'].hasError('required')" [hidden]="jointAccountForm.controls.gender.valid || (jointAccountForm.controls.gender.pristine && !isSubmittedJointAccount)"
+                                                                            class="text-danger">{{ 'Translation.Gender' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Identification Type' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="6" id="identificationTypeId" formControlName="identificationTypeId" [isEditable]="true"
+                                                                            [itemsSource]="identificationTypeList" displayMemberPath="identificationType"
+                                                                            selectedValuePath="identificationTypeId" [(ngModel)]="selectedJointAccountItem.contactDetail.identificationTypeId"
+                                                                            [isRequired]="true"></wj-combo-box>
+                                                                        <div *ngIf="jointAccountForm.controls['identificationTypeId'].hasError('required')" [hidden]="jointAccountForm.controls.identificationTypeId.valid || (jointAccountForm.controls.identificationTypeId.pristine && !isSubmittedJointAccount)"
+                                                                            class="text-danger">{{ 'Translation.Identification Type' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Identification Number' | translate }}  <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" tabindex="7" id="identificationType" formControlName="identificationType" maxlength="50"
+                                                                            [(ngModel)]="selectedJointAccountItem.contactDetail.identificationType"
+                                                                            required [isRequired]="true">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="jointAccountForm.controls['identificationType'].hasError('required')" [hidden]="jointAccountForm.controls.identificationType.valid || (jointAccountForm.controls.identificationType.pristine && !isSubmittedJointAccount)"
+                                                                            class="text-danger">{{ 'Translation.Identification Number' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="jointAccountForm.controls['identificationType'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Identification Number' | translate }}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Date of Birth' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-input-date [showYearPicker]="false" tabindex="8" id="dob" formControlName="dob" max="{{today}}" [(ngModel)]="selectedJointAccountItem.contactDetail.dob"
+                                                                            [format]="'yyyy-MM-dd'">
+                                                                        </wj-input-date>
+                                                                    </div>
+                                                                    <div class="col-sm-4 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Profession' | translate }}  <span class="validation"></span></label>
+                                                                        <wj-combo-box class="wijmo_style" tabindex="9" id="professionId" formControlName="professionId" [isEditable]="true" [itemsSource]="professionList"
+                                                                            displayMemberPath="professionCode" selectedValuePath="professionId"
+                                                                            [(ngModel)]="selectedJointAccountItem.contactDetail.professionId"></wj-combo-box>
+        
+                                                                    </div>
+                                                                </div>
+                                                                <button id="btnSave" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)" type="submit" class="btn btn-success pull-right">{{ 'Translation.Add' | translate }}</button>
+                                                            </div>
+        
+                                                            <div class="table_container">
+                                                                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsJointAccountList" [isReadOnly]="false" [selectionMode]="'Row'"
+                                                                [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 350px;"
+                                                                #jointAccountGrid>
+                                                                <wj-flex-grid-filter [filterColumns]="['contactDetail.firstName', 'contactDetail.lastName','contactDetail.identificationType']"></wj-flex-grid-filter>
+                                                                <wj-flex-grid-column [header]="'Translation.First Name' | translate" [binding]="'contactDetail.firstName'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Last Name' | translate" [binding]="'contactDetail.lastName'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Identification Number' | translate" [binding]="'contactDetail.identificationType'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.2*'">
+                                                                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+    
+                                                                        <button id="btnDetailRemove" class="on_edit_button" role="button" (click)="onDeleteJointAccountAction()" title="{{ 'Translation.Delete' | translate }}"> <img src="assets/img/cross_orange.png"/> </button>
+    
+                                                                    </ng-template>
+                                                                </wj-flex-grid-column>
+                                                            </wj-flex-grid>
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>Joint</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab5" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="clientExchangeForm" (ngSubmit)="onSaveClientExchangesAction(clientExchangeForm.value, clientExchangeForm.valid)">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 client_detail_box">
+                                                            <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                            <div class="dialog_detailBOx">
+        
+                                                                <div class="row wizard_data">
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="exchangeId">{{ 'Translation.Exchange' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box id="exchangeId" formControlName="exchangeId" class="wijmo_style" [isEditable]="true" [itemsSource]="exchangeList"
+                                                                            displayMemberPath="exchangeName" selectedValuePath="exchangeId"
+                                                                            [(ngModel)]="selectedClientExchange.exchangeId" [isRequired]="true" tabindex="1"
+                                                                            (ngModelChange)="onExchangeChangeEvent($event)" *ngIf="!isEditingClientExchange">
+                                                                        </wj-combo-box>
+                                                                        <label *ngIf="isEditingClientExchange"> {{selectedClientExchange.exchangeName}} </label>
+                                                                        <div *ngIf="!isEditingClientExchange">
+                                                                            <div *ngIf="clientExchangeForm.controls['exchangeId'].hasError('required')" [hidden]="clientExchangeForm.controls.exchangeId.valid || (clientExchangeForm.controls.exchangeId.pristine && !isSubmittedClientExchange)"
+                                                                                class="text-danger">{{ 'Translation.Exchange' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        </div>
+                                                                    </div>
+        
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="exchangeId">{{ 'Translation.Margin' | translate }}(%) <span class="validation">*</span></label>
+                                                                        
+                                                                        <wj-input-number tabindex="2" id="margin" formControlName="margin" [min]="0.01" [max]="100.00" [format]="'n2'" class="form-control"
+                                                                            [(ngModel)]="selectedClientExchange.margin" [isRequired]="true"
+                                                                            required (keyup)="onChangeMarginEvent($event)"></wj-input-number>
+                                                                        <div *ngIf="clientExchangeForm.controls['margin'].hasError('required')" [hidden]="clientExchangeForm.controls.margin.valid || (clientExchangeForm.controls.margin.pristine && !isSubmittedClientExchange)"
+                                                                            class="text-danger">{{ 'Translation.Margin' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="clientExchangeForm.controls['margin'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Margin' | translate }}.</div>
+                                                                        <div *ngIf="marginPerExceed" class="text-danger">&nbsp;&nbsp;&nbsp;{{ 'Translation.Invalid' | translate }} {{ 'Translation.Margin' | translate }}(%).</div>
+        
+                                                                    </div>
+                                                                    <div class="col-sm-12 fields_box wizard_checkBox">
+                                                                        <div class="abc-checkbox abc-checkbox-primary">
+                                                                            <input type="checkbox" tabindex="3" [(ngModel)]="selectedClientExchange.active" id="activeCheckBox" formControlName="active">
+                                                                            <label for="activeCheckBox">&nbsp;&nbsp;{{ 'Common.Active' | translate }}</label>
+                                                                        </div>
+                                                                        <div class="abc-checkbox abc-checkbox-primary">
+                                                                            <input id="checkbox2" type="checkbox">
+                                                                            <input type="checkbox" tabindex="4" [(ngModel)]="selectedClientExchange.allowShortSell" id="allowShortSell" formControlName="allowShortSell">
+                                                                            <label for="allowShortSell">&nbsp;&nbsp;{{ 'Translation.Short Sell' | translate }}</label>
+                                                                        </div>
+                                                                        <div class="abc-checkbox abc-checkbox-primary">
+                                                                            <input id="checkbox2" type="checkbox">
+                                                                            <input type="checkbox" tabindex="5" [(ngModel)]="selectedClientExchange.bypassCrs" id="bypassCrs" formControlName="bypassCrs">
+                                                                            <label for="bypassCrs">&nbsp;&nbsp;{{ 'Translation.Bypass' | translate }} CRS</label>
+                                                                        </div>
+                                                                        <div class="abc-checkbox abc-checkbox-primary">
+                                                                            <input id="checkbox2" type="checkbox">
+                                                                            <input type="checkbox" tabindex="6" [(ngModel)]="selectedClientExchange.openPositionStatus" id="openPositionStatus" formControlName="openPositionStatus">
+                                                                            <label for="openPositionStatus">&nbsp;&nbsp;{{ 'Translation.Use Open Position' | translate }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+        
+                                                                <button id="btnCancel" type="button" style="margin-left: 10px" class="btn btn-default pull-right" (click)="onCancelClientExchangeAction()"
+                                                                     *ngIf="isEditingClientExchange">{{ 'Translation.Cancel' | translate }}</button>
+                                                                <button id="btnCancel" type="button" style="margin-left: 10px" class="btn btn-default pull-right" (click)="onCancelClientExchangeAction()"
+                                                                     *ngIf="!isEditingClientExchange">{{ 'Common.Clear' | translate }}</button>
+        
+                                                                <button id="btnSave" type="submit"  class="btn btn-success pull-right" *ngIf="isEditingClientExchange && userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)">{{ 'Translation.Update' | translate }}</button>
+                                                                <button id="btnSave" type="submit"  class="btn btn-success pull-right" *ngIf="!isEditingClientExchange && userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)">{{ 'Translation.Add' | translate }}</button>
+                                                            </div>
+        
+                                                            <div class="table_container">
+                                                                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsClientExchangeList" [isReadOnly]="false" [selectionMode]="'Row'"
+                                                                [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 250px;"
+                                                                #clientExchangeGrid>
+                                                                <wj-flex-grid-filter [filterColumns]="['exchangeName','margin', 'active','allowShortSell','bypassCrs','openPositionStatus']"></wj-flex-grid-filter>
+                                                                <wj-flex-grid-column [header]="'Translation.Exchange' | translate" [align]="'left'" [binding]="'exchangeName'" [width]="'0.4*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Margin' | translate" [align]="'right'" [binding]="'margin'" [format]="'n2'" [width]="'0.2*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Common.Active' | translate" [binding]="'active'" [width]="'0.2*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Short Sell' | translate" [binding]="'allowShortSell'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Bypass CRS' | translate" [binding]="'bypassCrs'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                <wj-flex-grid-column [header]="'Translation.Use Open Position' | translate" [binding]="'openPositionStatus'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+    
+                                                                <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.2*'" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)">
+                                                                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+    
+                                                                        <button class="on_edit_button" type="button" (click)="onEditClientExchangeAction()" title="{{ 'Translation.Edit' | translate }}" role="button"><img src="assets/img/edit_orange.png" /></button>
+                                                                      
+    
+                                                                    </ng-template>
+                                                                </wj-flex-grid-column>
+                                                            </wj-flex-grid>
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Risk' | translate }}</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientExchangeList.items.length > 0">
+                                                                    <table>
+                                                                      
+                                                                        <tr *ngFor="let risk of itemsClientExchangeList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b> {{risk.exchangeName}} </b> <br /> {{ 'Translation.Margin' | translate }}: {{risk.margin}}
+                                                                            <br />  {{ 'Translation.Short Sell' | translate }}: {{risk.allowShortSell}} <br />
+                                                                           
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab6" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="allowedMarketForm">
+        
+                                                    <div class="row">
+                                                        <div class="col-sm-9 table_container">
+                                                            <wj-flex-grid #flexAllowedMarket class="grid" [itemsSource]="itemsAllowedMarketList" [childItemsPath]="'marketList'" [selectionMode]="'ListBox'"
+                                                            [headersVisibility]="'Column'" [isReadOnly]="false" style="height: 350px;">
+                                                            <wj-flex-grid-column [header]="'Translation.Exchange' | translate" [align]="'left'" [binding]="'exchange.exchangeName'" [width]="'0.5*'"></wj-flex-grid-column>
+                                                            <wj-flex-grid-column [header]="'Translation.Market' | translate" [align]="'left'" [binding]="'marketCode'" [width]="'0.5*'"></wj-flex-grid-column>
+                                                            <wj-flex-grid-column [header]="'Translation.Allow' | translate" [align]="'center'" [binding]="'selected'" [width]="'0.5*'">
+                                                                <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-item="item">
+                                                                    <div *ngIf="item.selected == true || item.selected == false">
+                                                                        <input type="checkbox" [checked]="item.selected" (change)="allowMarketCheckBoxEvent(item.exchangeId,item.marketId,$event)"/>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </wj-flex-grid-column>
+                                                        </wj-flex-grid>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Markets' | translate }}</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientExchangeList.items.length > 0">
+                                                                    <table>
+                                                                        <tr *ngFor="let risk of itemsClientExchangeList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b> {{risk.exchangeName}} </b> <br /> {{ 'Translation.Margin' | translate }}: {{risk.margin}}
+                                                                            <br /> {{ 'Translation.Short Sell' | translate }}: {{risk.allowShortSell}} <br />
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsAllowedMarketList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let market of itemsAllowedMarketList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{market.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Market' | translate }}(s):
+                                                                                    <td *ngFor="let risk of market.marketList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.marketCode}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab7" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="clientCustodianForm">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 table_container">
+                                                            <wj-flex-grid #flexCustodian class="grid" [itemsSource]="itemsClientCustodianList" [childItemsPath]="'participantList'" [selectionMode]="'ListBox'"
+                                                        [headersVisibility]="'Column'" style="height: 350px;">
+                                                        <wj-flex-grid-column [header]="'Translation.Exchange' | translate" [align]="'left'" [binding]="'exchange.exchangeName'" [width]="'0.5*'"></wj-flex-grid-column>
+                                                        <wj-flex-grid-column [header]="'Translation.Custodian' | translate" [align]="'left'" [binding]="'displayName_'" [width]="'0.5*'"></wj-flex-grid-column>
+                                                        <wj-flex-grid-column [header]="'Translation.Associate' | translate" [binding]="'selected'" [width]="'0.5*'" [align]="'center'">
+                                                            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-item="item">
+                                                                <div *ngIf="item.selected == true || item.selected == false">
+                                                                    <input type="checkbox" [checked]="item.selected" (change)="chustodianCheckBoxEvent(item.exchangeId,item.participantId,$event)"
+                                                                    />
+                                                                </div>
+                                                            </ng-template>
+                                                        </wj-flex-grid-column>
+                                                    </wj-flex-grid>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Custodian' | translate }}</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientExchangeList.items.length > 0">
+                                                                    <table>
+                                                                        <tr *ngFor="let risk of itemsClientExchangeList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b> {{risk.exchangeName}} </b> <br /> {{ 'Translation.Margin' | translate }}: {{risk.margin}}
+                                                                            <br /> {{ 'Translation.Short Sell' | translate }}: {{risk.allowShortSell}} <br />
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsAllowedMarketList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let market of itemsAllowedMarketList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{market.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Market' | translate }}(s):
+                                                                                    <td *ngFor="let risk of market.marketList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.marketCode}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientCustodianList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let cust of itemsClientCustodianList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{cust.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Custodian' | translate }}(s):
+                                                                                    <td *ngFor="let risk of cust.participantList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.displayName_}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+        
+        
+         
+                                                                    </table>
+                                                                </div>
+        
+                                                            </div>
+                                                        </div>
+        
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab8" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="bankDetailForm" (ngSubmit)="onSaveBankDetailAction(bankDetailForm.value, bankDetailForm.valid)">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 client_detail_box">
+                                                            <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                            <div class="dialog_detailBOx">
+        
+                                                                <div class="row wizard_data">
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="bankId">{{ 'Translation.Bank' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box id="bankId" formControlName="bankId" class="wijmo_style" [isEditable]="true" [itemsSource]="bankList" displayMemberPath="displayName_"
+                                                                            selectedValuePath="bankId" [(ngModel)]="selectedBankAccountItem.bankBranch.bank.bankId" tabindex="1"
+                                                                            [isRequired]="true" (ngModelChange)="onBankChangeEvent($event)">
+                                                                        </wj-combo-box>
+                                                                        <div *ngIf="bankDetailForm.controls['bankId'].hasError('required')" [hidden]="bankDetailForm.controls.bankId.valid || (bankDetailForm.controls.bankId.pristine && !isSubmittedBankAccount)"
+                                                                            class="text-danger">{{ 'Translation.Bank' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+        
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="branchId">{{ 'Translation.Branch' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box id="branchId" formControlName="branchId" class="wijmo_style" [isEditable]="true" [itemsSource]="bankBranchList"
+                                                                            displayMemberPath="branchName" selectedValuePath="bankBranchId"
+                                                                            [(ngModel)]="selectedBankAccountItem.bankBranch.bankBranchId" tabindex="2"
+                                                                            [isRequired]="true">
+                                                                        </wj-combo-box>
+                                                                        <div *ngIf="bankDetailForm.controls['branchId'].hasError('required')" [hidden]="bankDetailForm.controls.branchId.valid || (bankDetailForm.controls.branchId.pristine && !isSubmittedBankAccount)"
+                                                                            class="text-danger">{{ 'Translation.Branch' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+        
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="accountNo">{{ 'Translation.Account Number' | translate }}. <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" [isRequired]="true" formControlName="accountNo" [(ngModel)]="selectedBankAccountItem.bankAccountNo"
+                                                                            maxlength="20" required tabindex="3">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="bankDetailForm.controls['accountNo'].hasError('required')" [hidden]="bankDetailForm.controls.accountNo.valid || (bankDetailForm.controls.accountNo.pristine && !isSubmittedBankAccount)"
+                                                                            class="text-danger">{{ 'Translation.Account Number' | translate }}. {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="bankDetailForm.controls['accountNo'].hasError('pattern')" class="text-danger">{{ 'Translation.Invalid' | translate }} {{ 'Translation.Account Number' | translate }}.</div>
+                                                                    </div>
+                                                                </div>
+                                                                <button id="btnSave" type="submit"  class="btn btn-success pull-right" *ngIf="!isEditingBankDetail && userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)">{{ 'Translation.Add' | translate }}</button>
+                                                            </div>
+                                                            <div class="table_container">
+                                                                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsBanAccountList" [isReadOnly]="false" [selectionMode]="'Row'"
+                                                                    [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 350px;"
+                                                                    #bankAccountGrid>
+                                                                    <wj-flex-grid-filter [filterColumns]="['bankBranch.bank.bankName', 'bankBranch.branchName','bankAccountNo']"></wj-flex-grid-filter>
+                                                                    <wj-flex-grid-column [header]="'Translation.Bank' | translate" [align]="'left'" [binding]="'bankBranch.bank.bankName'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Translation.Branch' | translate" [align]="'left'" [binding]="'bankBranch.branchName'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Translation.Account Number' | translate" [align]="'left'" [binding]="'bankAccountNo'" [width]="'0.3*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.2*'">
+                                                                        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                                                                           
+                                                                            <input type="image" src="assets/img/cross_orange.png" class="btTxt submit" (click)="onDeleteBankAccountAction()" title="{{ 'Translation.Delete' | translate }}"
+                                                                                id="btnDetailRemove" />
+                                                                        </ng-template>
+                                                                    </wj-flex-grid-column>
+        
+                                                                </wj-flex-grid>
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Bank' | translate }}</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientExchangeList.items.length > 0">
+                                                                    <table>
+                                                                        <tr *ngFor="let risk of itemsClientExchangeList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b> {{risk.exchangeName}} </b> <br /> {{ 'Translation.Margin' | translate }}: {{risk.margin}}
+                                                                            <br /> {{ 'Translation.Short Sell' | translate }}: {{risk.allowShortSell}} <br />
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsAllowedMarketList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let market of itemsAllowedMarketList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{market.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Market' | translate }}(s):
+                                                                                    <td *ngFor="let risk of market.marketList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.marketCode}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientCustodianList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let cust of itemsClientCustodianList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{cust.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Custodian' | translate }}(s):
+                                                                                    <td *ngFor="let risk of cust.participantList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.displayName_}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+        
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab9" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="documentForm" (ngSubmit)="onAddDocument(documentForm.value, documentForm.valid)">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 client_detail_box">
+                                                            <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                            <div class="dialog_detailBOx">
+                                                                <div class="row wizard_data">
+                                                                    <div class="col-sm-12 col-lg-5 fields_box">
+                                                                        <label for="documentTypeId">{{ 'Translation.Document Type' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box id="documentTypeId" class="wijmo_style" name="documentTypeId" [itemsSource]="documentTypes" displayMemberPath="type"
+                                                                            selectedValuePath="documentTypeId" [isRequired]="true" [isEditable]="true"
+                                                                            [(ngModel)]="selectedClientDocument.documentType.documentTypeId" tabindex="1"
+                                                                            formControlName="documentTypeId" required> </wj-combo-box>
+                                                                        <div *ngIf="documentForm.controls['documentTypeId'].hasError('required')" [hidden]="documentForm.controls.documentTypeId.valid || (documentForm.controls.documentTypeId.pristine && !isSubmittedDocumentForm)"
+                                                                            class="text-danger">{{ 'Translation.Document Type' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-lg-6 fields_box">
+                                                                        <label for="fileUpload">{{ 'Translation.Document' | translate }} <span class="validation">*</span> ( .doc,.pdf,image.* )</label>
+                                                                        <input type="file" multiple (change)="fileChangeEvent(input)" #input id="fileUpload" style="color:#f3b170" name="fileUpload"
+                                                                            formControlName="fileUpload" accept="application/msword,application/pdf, image/*" tabindex="2"
+                                                                            [(ngModel)]="selectedFileName" required/>
+                                                                        <div *ngIf="fileSelectionMsgShow" class="text-danger">{{ 'Translation.Document' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                        <div *ngIf="fileSizeExceed" class="text-danger">{{ 'Translation.File size exceed. Maximum allowed size is 2MB' | translate }}.</div>
+                                                                    </div>
+                                                                </div>
+                                                                <button id="btnSave" *ngIf="userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)" type="submit"  class="btn btn-success pull-right">{{ 'Translation.Add' | translate }}</button>
+                                                            </div>
+                                                            <div class="table_container">
+                                                                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsDocumentList" [isReadOnly]="false" [selectionMode]="'Row'"
+                                                                    [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 350px;"
+                                                                    #documentGrid>
+                                                                    <wj-flex-grid-filter [filterColumns]="['documentName','documentType.type']"></wj-flex-grid-filter>
+                                                                    <wj-flex-grid-column [header]="'Translation.Document Name' | translate" [align]="'left'" [binding]="'documentName'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Translation.Document Type' | translate" [align]="'left'" [binding]="'documentType.type'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Translation.Document' | translate" [width]="'0.5*'">
+                                                                        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                                                                            <button class="btn btn-success mb-xs" type="button" (click)="onDownloadDocumentAction()" title="{{ 'Translation.Download' | translate }}" role="button"><i class="fa fa-download" aria-hidden="true"></i></button>
+                                                                        </ng-template>
+                                                                    </wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.2*'">
+                                                                        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                                                                        
+        
+                                                                            <input type="image" src="assets/img/cross_orange.png" class="btTxt submit" (click)="onDeleteDocumentAction()" title="{{ 'Translation.Delete' | translate }}"
+                                                                                id="btnDetailRemove" />
+                                                                        </ng-template>
+                                                                    </wj-flex-grid-column>
+                                                                </wj-flex-grid>
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Document' | translate }}</h1>
+                                                            <div class="contact_details">
+                                                                <div *ngIf="showIndividual && (selectedItem.contactDetail.firstName != '' || selectedItem.contactDetail.middleName != '' || selectedItem.contactDetail.lastName != '')">
+                                                                    <h3>{{selectedItem.contactDetail.firstName}} {{selectedItem.contactDetail.middleName}}
+                                                                        {{selectedItem.contactDetail.lastName}}
+                                                                    </h3>
+                                                                    <p>{{ 'Translation.Client Name' | translate }}</p>
+                                                                </div>
+                                                                <div *ngIf="showCorporate && selectedItem.contactDetail.companyName != '' ">
+                                                                    <h3>{{selectedItem.contactDetail.companyName}}</h3>
+                                                                    <p>{{ 'Translation.Company Name' | translate }}</p>
+                                                                </div>
+        
+                                                                <div *ngIf="selectedItem.clientCode != '' ">
+                                                                    <h3>{{selectedItem.clientCode}}</h3>
+                                                                    <p>{{ 'Translation.Client Code' | translate }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row client_oDetail">
+        
+                                                                <div class="col-sm-12" *ngIf="selectedItem.commissionSlabMaster.commissionSlabId != null ">
+                                                                    <p>{{selectedItem.commissionSlabMaster.slabNameDisplay_}}<br/>{{ 'Translation.Commission Slab' | translate }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.phone1 != '' ">
+                                                                    <p>{{selectedItem.contactDetail.phone1}}<br/>{{ 'Translation.Phone Number' | translate }}.</p>
+                                                                </div>
+                                                                <div class="col-sm-12" *ngIf="selectedItem.contactDetail.email != '' ">
+                                                                    <p>{{selectedItem.contactDetail.email}}<br/>{{ 'Translation.Email' | translate }}</p>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientExchangeList.items.length > 0">
+                                                                    <table>
+                                                                        <tr *ngFor="let risk of itemsClientExchangeList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b> {{risk.exchangeName}} </b> <br /> {{ 'Translation.Margin' | translate }}: {{risk.margin}}
+                                                                            <br /> {{ 'Translation.Short Sell' | translate }}: {{risk.allowShortSell}} <br />
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsAllowedMarketList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let market of itemsAllowedMarketList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{market.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Market' | translate }}(s):
+                                                                                    <td *ngFor="let risk of market.marketList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.marketCode}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+        
+                                                                <div class="col-sm-12" *ngIf="itemsClientCustodianList.items.length > 0">
+                                                                    <table>
+                                                                        <div *ngFor="let cust of itemsClientCustodianList.items.slice(0, 2)" style="text-align: left;">
+                                                                            <b>{{cust.exchange.exchangeName}}</b> <br />
+                                                                            <table>
+                                                                                <tr>
+                                                                                    {{ 'Translation.Custodian' | translate }}(s):
+                                                                                    <td *ngFor="let risk of cust.participantList">
+                                                                                        <div *ngIf="risk.selected"> {{risk.displayName_}} &nbsp; </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </table>
+                                                                </div>
+        
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                                <div>
+                                                    <b>{{ 'Translation.Note' | translate }}:</b> {{ 'Translation.Only 5 documents are allowed with size of 2MB each' | translate }}.
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab10" role="tabpanel">
+                                                <form class="form-horizontal form-label-left" method="post" data-parsley-priority-enabled="false" novalidate="novalidate"
+                                                    [formGroup]="beneficiaryForm" (ngSubmit)="onSaveBeneficiaryAction(beneficiaryForm.value, beneficiaryForm.valid)">
+                                                    <div class="row">
+                                                        <div class="col-sm-9 client_detail_box">
+                                                            <h3>{{ 'Translation.Parameters' | translate }}</h3>
+                                                            <div class="dialog_detailBOx">
+                                    
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="beneficiaryName">{{ 'Translation.Beneficiary Name' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-input-mask class="wijmo_style" [isRequired]="true" formControlName="beneficiaryName" [(ngModel)]="selectedBeneficiaryItem.beneficiaryName"
+                                                                            maxlength="20" required tabindex="1">
+                                                                        </wj-input-mask>
+                                                                        <div *ngIf="beneficiaryForm.controls['beneficiaryName'].hasError('required')" [hidden]="beneficiaryForm.controls.beneficiaryName.valid || (beneficiaryForm.controls.beneficiaryName.pristine && !isSubmittedBeneficiary)"
+                                                                            class="text-danger">{{ 'Translation.Beneficiary Name' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+        
+                                                                  
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="beneficiaryCNIC">{{ 'Translation.Beneficiary CNIC' | translate }}   <span style="color: darkgrey;">(xxxxx-xxxxxxx-x)</span></label>
+                                                                        <wj-input-mask tabindex="2" class="wijmo_style" (ngModelChange)="beneficiaryMask($event)"  formControlName="beneficiaryCNIC" [(ngModel)]="selectedBeneficiaryItem.beneficiaryCNIC"
+                                                                            maxlength="20">
+                                                                        </wj-input-mask>
+                                                                        
+                                                                            <div *ngIf="!bCnicValid" class="text-danger">{{ 'Translation.Beneficiary CNIC is not valid' | translate }} .</div>
+                                                                    </div>
+
+
+                                                                    <div class="col-sm-6 fields_box">
+                                                                        <label for="search-input">{{ 'Translation.Relation' | translate }} <span class="validation">*</span></label>
+                                                                        <wj-combo-box id="relationId"  formControlName="relationId" tabindex="17" class="wijmo_style" [isEditable]="true" [itemsSource]="relationList"
+                                                                            displayMemberPath="relationDesc" selectedValuePath="relationId"
+                                                                            [(ngModel)]="selectedBeneficiaryItem.relation.relationId" tabindex="3"
+                                                                            required>
+                                                                        </wj-combo-box>
+                                                                        <div *ngIf="beneficiaryForm.controls['relationId'].hasError('required')" [hidden]="beneficiaryForm.controls.relationId.valid || (beneficiaryForm.controls.relationId.pristine && !isSubmittedBeneficiary)"
+                                                                            class="text-danger">{{ 'Translation.Relation' | translate }} {{ 'Translation.is required' | translate }}.</div>
+                                                                    </div>
+                                                                
+                                                                <button id="btnSave" type="submit"  class="btn btn-success pull-right" *ngIf="!isEditingBeneficiaryDetail && userService.isAuhtorized(userService.EB_CONF_CLIENTS_NEW)">{{ 'Translation.Add' | translate }}</button>
+                                                            </div>
+                                                            <div class="table_container">
+                                                                <wj-flex-grid class="grid" [isReadOnly]="true" [itemsSource]="itemsBeneficiaryList" [selectionMode]="'Row'"
+                                                                    [autoSizeMode]="'Headers'" [headersVisibility]="'Column'" style="height: 350px;"
+                                                                    #beneficiaryGrid>
+                                                                    <wj-flex-grid-filter [filterColumns]="['beneficiaryName', 'beneficiaryCNIC','relation.relationDesc']"></wj-flex-grid-filter>
+                                                                    <wj-flex-grid-column [header]="'Translation.Name' | translate" [align]="'left'" [binding]="'beneficiaryName'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'CNIC'" [align]="'left'" [binding]="'beneficiaryCNIC'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Translation.Relation' | translate" [align]="'left'" [binding]="'relation.relationDesc'" [width]="'0.5*'" [minWidth]="30"></wj-flex-grid-column>
+                                                                    <wj-flex-grid-column [header]="'Common.Action' | translate" [align]="'center'" [width]="'0.2*'">
+                                                                        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                                                                            
+                                                                            <input type="image" src="assets/img/cross_orange.png" class="btTxt submit" (click)="onDeleteBeneficiaryAction()" title="{{ 'Translation.Delete' | translate }}"
+                                                                                id="btnDetailRemove" />
+                                                                        </ng-template>
+                                                                    </wj-flex-grid-column>
+        
+                                                                </wj-flex-grid>
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-sm-3 client_right">
+                                                            <h1>{{ 'Translation.Beneficiary' | translate }}</h1>
+                                                        </div>
+        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="orange_footer_small">
+                                <button *ngIf="currentTab_ != 'BI' && !isEditing" class="save_btn pull-left" (click)="onPreviousAction()" role="button" type="button"> <i class="fa fa-caret-left"></i>&nbsp; {{ 'Translation.Previous' | translate }}</button>
+        
+                                <button *ngIf="currentTab_ != 'DOC' && !isEditing" class="save_btn" (click)="onNextAction()" role="button" type="button">
+                                    {{ 'Translation.Next' | translate }} &nbsp; <i class="fa fa-caret-right"></i></button>
+                                         <div *ngIf="isEditing  && userService.isAuhtorized(userService.EB_CONF_CLIENTS_UPDATE)" class="update-btn">
+                                            <button *ngIf="currentTab_ == 'BI'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Basic' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'CON'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Contact' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'SA'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.User' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'JA'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Joint' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'CRS'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Risk' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'AM'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Market' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'CU'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Custodian' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'BA'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Bank' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                            <button *ngIf="currentTab_ == 'DOC'" class="save_btn_medium">{{ 'Common.Update' | translate }} {{ 'Translation.Document' | translate }} &nbsp; <i class="glyphicon glyphicon-ok"></i></button>
+                                        </div>
+                                <button class="save_btn" *ngIf="currentTab_ == 'DOC' && !isEditing">{{ 'Common.Finish' | translate }} &nbsp;<i class="glyphicon glyphicon-ok"></i></button>
+                                <button type="button" data-dismiss="modal" class="cancel_btn" (click)="onCancelAction()">{{ 'Common.Cancel' | translate }} &nbsp; </button>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        <dialog-cmp #dialogCmp (btnClick)="getNotification($event)"> </dialog-cmp>
